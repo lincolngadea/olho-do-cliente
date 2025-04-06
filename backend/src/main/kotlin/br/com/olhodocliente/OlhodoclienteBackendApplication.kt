@@ -1,11 +1,11 @@
-package olhodocliente_backend
+package br.com.olhodocliente
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class BackendApplication
+class OlhodoclienteBackendApplication
 
 fun main(args: Array<String>) {
-	runApplication<BackendApplication>(*args)
+	runApplication<OlhodoclienteBackendApplication>(*args)
 }

@@ -1,10 +1,10 @@
-package olhodocliente_backend
+package br.com.olhodocliente
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class BackendApplicationTests {
+class OlhodoclienteBackendApplicationTests {
 
 	@Test
 	fun contextLoads() {
