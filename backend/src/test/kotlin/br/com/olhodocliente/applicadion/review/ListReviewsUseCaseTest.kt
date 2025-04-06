@@ -1,7 +1,8 @@
-package br.com.olhodocliente.infrastructure.review
+package br.com.olhodocliente.applicadion.review
 
 import br.com.olhodocliente.domain.review.Platform
 import br.com.olhodocliente.domain.review.Review
+import br.com.olhodocliente.infrastructure.review.SpringDataReviewJpaRepository
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
