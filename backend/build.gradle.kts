@@ -39,6 +39,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("org.mockito:mockito-core")
 	testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 	runtimeOnly("com.h2database:h2")
 }
 
