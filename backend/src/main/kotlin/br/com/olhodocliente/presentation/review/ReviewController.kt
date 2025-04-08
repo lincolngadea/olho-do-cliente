@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController
 class ReviewController(
     private val listReviewsUseCase: ListReviewsUseCase
 ) {
-
     @GetMapping
     fun reviewsListAll(): List<Review> {
         return listReviewsUseCase.execute()

@@ -16,4 +16,8 @@ class JpaReviewRepository(
     override fun findAll(): List<Review> {
         return jpa.findAll()
     }
+
+    override fun save(review: Review): Review {
+        return jpa.save(review)
+    }
 }
