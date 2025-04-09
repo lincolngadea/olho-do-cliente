@@ -1,10 +1,8 @@
 package br.com.aponteaqui.applicadion.review
 
-import br.com.aponteaqui.application.review.CreateReviewUseCase
 import br.com.aponteaqui.application.review.ListReviewsUseCase
-import br.com.aponteaqui.domain.review.Platform
-import br.com.aponteaqui.domain.review.Review
 import br.com.aponteaqui.presentation.review.ReviewController
+import br.com.aponteaqui.utils.reviewMock
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,8 +11,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
-import java.time.LocalDateTime
-import java.util.*
 
 @WebMvcTest(ReviewController::class)
 class ReviewControllerTest {
@@ -25,18 +21,10 @@ class ReviewControllerTest {
     @MockitoBean
     lateinit var listReviewsUseCase: ListReviewsUseCase
 
-    @MockitoBean
-    lateinit var createReviewUseCase: CreateReviewUseCase
-
     @Test
-    fun `deve retornar lista de avaliações em JSON`() {
-        val review = Review(
-            id = UUID.randomUUID(),
-            authorName = "João",
-            rating = 5,
-            comment = "Excelente",
-            platform = Platform.GOOGLE,
-            createdAt = LocalDateTime.now()
+    fun `deve retornar lista de avaliacoes em JSON`() {
+        val review = reviewMock(
+            authorNameMock = "João"
         )
 
         Mockito.`when`(listReviewsUseCase.execute()).thenReturn(listOf(review))

@@ -9,15 +9,16 @@ import br.com.aponteaqui.utils.reviewMock
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
+import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.http.MediaType
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import java.time.LocalDateTime
-import java.util.*
 
 @WebMvcTest(ReviewController::class)
 class ReviewControllerTest {
@@ -71,6 +72,27 @@ class ReviewControllerTest {
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath("$[0].platform"){value("GOOGLE")}
                 jsonPath("$[0].authorName"){ value("Rafael")}
+            }
+    }
+
+    fun `deve retornar avaliacoes paginadas`(){
+        val review = reviewMock(
+            authorNameMock = "Carlos",
+            ratingMock = 4,
+            commentMock = "Razoavel"
+        )
+
+        val page: Page<Review> = PageImpl(listOf(review))
+
+        Mockito.`when`(listReviewsUseCase.executePage(any()))
+            .thenReturn(page)
+
+        mockMvc.get("/reviews/v2?page=0&size=1&sort=createdAt,desc")
+            .andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$.content.length()"){value(1)}
+                jsonPath("$.content[0].authorName"){value("Carlos")}
             }
     }
 }

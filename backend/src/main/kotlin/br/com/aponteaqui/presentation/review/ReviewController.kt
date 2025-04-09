@@ -7,6 +7,8 @@ import br.com.aponteaqui.domain.review.toResponse
 import br.com.aponteaqui.presentation.review.dto.CreateReviewRequest
 import br.com.aponteaqui.presentation.review.dto.ReviewResponse
 import jakarta.validation.Valid
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
@@ -27,6 +29,19 @@ class ReviewController(
             listReviewsUseCase.execute()
         }
         return reviews.map { it.toResponse() }
+    }
+
+    @GetMapping("/v2")
+    fun getReviews(
+        @RequestParam(required = false) platform: Platform?,
+        pageable: Pageable
+    ): Page<ReviewResponse> {
+        val reviewsPage = if (platform != null){
+            listReviewsUseCase.executePageByPlatform(platform, pageable)
+        }else{
+            listReviewsUseCase.executePage(pageable)
+        }
+        return reviewsPage.map { it.toResponse() }
     }
 
 
