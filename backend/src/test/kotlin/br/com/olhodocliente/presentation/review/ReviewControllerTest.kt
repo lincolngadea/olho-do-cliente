@@ -4,6 +4,8 @@ import br.com.olhodocliente.application.review.CreateReviewUseCase
 import br.com.olhodocliente.application.review.ListReviewsUseCase
 import br.com.olhodocliente.domain.review.Platform
 import br.com.olhodocliente.domain.review.Review
+import br.com.olhodocliente.presentation.review.dto.CreateReviewRequest
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,14 +40,9 @@ class ReviewControllerTest {
             createdAt = LocalDateTime.now()
         )
 
-        val json = """
-                {
-                    "authorName": "Rafael",
-                    "rating": 5,
-                    "comment": "Excelente",
-                    "platform": "GOOGLE"                    
-                }
-            """.trimIndent()
+        val mapper = jacksonObjectMapper()
+
+        val json = mapper.writeValueAsString(CreateReviewRequest("Rafael", 5,"Excelente", Platform.GOOGLE))
 
         Mockito.`when`(
             createReviewUseCase.execute(

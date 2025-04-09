@@ -1,5 +1,6 @@
 package br.com.olhodocliente.applicadion.review
 
+import br.com.olhodocliente.application.review.CreateReviewUseCase
 import br.com.olhodocliente.application.review.ListReviewsUseCase
 import br.com.olhodocliente.domain.review.Platform
 import br.com.olhodocliente.domain.review.Review
@@ -19,14 +20,16 @@ import java.util.*
 class ReviewControllerTest {
 
     @Autowired
-    private lateinit var mockMvc: MockMvc
+    lateinit var mockMvc: MockMvc
 
     @MockitoBean
-    private lateinit var listReviewsUseCase: ListReviewsUseCase
+    lateinit var listReviewsUseCase: ListReviewsUseCase
+
+    @MockitoBean
+    lateinit var createReviewUseCase: CreateReviewUseCase
 
     @Test
     fun `deve retornar lista de avaliações em JSON`() {
-        // Arrange
         val review = Review(
             id = UUID.randomUUID(),
             authorName = "João",
@@ -38,13 +41,14 @@ class ReviewControllerTest {
 
         Mockito.`when`(listReviewsUseCase.execute()).thenReturn(listOf(review))
 
-        // Act & Assert
         mockMvc.get("/reviews")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 jsonPath("$[0].authorName") { value("João") }
                 jsonPath("$[0].rating") { value(5) }
+                jsonPath("$[0].comment") { value("Excelente") }
+                jsonPath("$[0].platform") { value("GOOGLE") }
             }
     }
 }

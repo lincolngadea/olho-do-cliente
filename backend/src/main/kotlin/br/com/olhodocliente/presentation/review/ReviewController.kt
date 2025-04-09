@@ -2,15 +2,12 @@ package br.com.olhodocliente.presentation.review
 
 import br.com.olhodocliente.application.review.CreateReviewUseCase
 import br.com.olhodocliente.application.review.ListReviewsUseCase
-import br.com.olhodocliente.domain.review.Review
+import br.com.olhodocliente.domain.review.toResponse
 import br.com.olhodocliente.presentation.review.dto.CreateReviewRequest
+import br.com.olhodocliente.presentation.review.dto.ReviewResponse
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.net.URI
 
 @RestController
@@ -20,12 +17,13 @@ class ReviewController(
     private val createReviewUseCase: CreateReviewUseCase
 ) {
     @GetMapping
-    fun reviewsListAll(): List<Review> = listReviewsUseCase.execute()
+    fun getReviews(): List<ReviewResponse> =
+        listReviewsUseCase.execute().map { it.toResponse() }
 
     @PostMapping
     fun createReview(
         @Valid @RequestBody request: CreateReviewRequest
-    ): ResponseEntity<Review>{
+    ): ResponseEntity<ReviewResponse> {
         val created = createReviewUseCase.execute(
             authorName = request.authorName,
             rating = request.rating,
@@ -33,6 +31,6 @@ class ReviewController(
             platform = request.platform.name
         )
 
-        return ResponseEntity.created(URI.create("/reviews/${created.id}")).body(created)
+        return ResponseEntity.created(URI.create("/reviews/${created.id}")).body(created.toResponse())
     }
 }
