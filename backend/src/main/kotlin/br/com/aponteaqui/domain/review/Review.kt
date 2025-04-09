@@ -1,6 +1,6 @@
-package br.com.olhodocliente.domain.review
+package br.com.aponteaqui.domain.review
 
-import br.com.olhodocliente.presentation.review.dto.ReviewResponse
+import br.com.aponteaqui.presentation.review.dto.ReviewResponse
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.util.*

@@ -1,10 +1,10 @@
-package br.com.olhodocliente.presentation.review
+package br.com.aponteaqui.presentation.review
 
-import br.com.olhodocliente.application.review.CreateReviewUseCase
-import br.com.olhodocliente.application.review.ListReviewsUseCase
-import br.com.olhodocliente.domain.review.Platform
-import br.com.olhodocliente.domain.review.Review
-import br.com.olhodocliente.presentation.review.dto.CreateReviewRequest
+import br.com.aponteaqui.application.review.CreateReviewUseCase
+import br.com.aponteaqui.application.review.ListReviewsUseCase
+import br.com.aponteaqui.domain.review.Platform
+import br.com.aponteaqui.domain.review.Review
+import br.com.aponteaqui.presentation.review.dto.CreateReviewRequest
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito

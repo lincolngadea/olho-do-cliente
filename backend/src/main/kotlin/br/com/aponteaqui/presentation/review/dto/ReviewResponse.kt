@@ -1,6 +1,6 @@
-package br.com.olhodocliente.presentation.review.dto
+package br.com.aponteaqui.presentation.review.dto
 
-import br.com.olhodocliente.domain.review.Platform
+import br.com.aponteaqui.domain.review.Platform
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 import java.util.UUID

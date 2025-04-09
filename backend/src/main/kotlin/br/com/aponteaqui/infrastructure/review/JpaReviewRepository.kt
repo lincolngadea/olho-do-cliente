@@ -1,7 +1,7 @@
-package br.com.olhodocliente.infrastructure.review
+package br.com.aponteaqui.infrastructure.review
 
-import br.com.olhodocliente.domain.review.Review
-import br.com.olhodocliente.domain.review.ReviewRepository
+import br.com.aponteaqui.domain.review.Review
+import br.com.aponteaqui.domain.review.ReviewRepository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID

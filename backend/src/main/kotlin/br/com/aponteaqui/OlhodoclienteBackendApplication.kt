@@ -1,4 +1,4 @@
-package br.com.olhodocliente
+package br.com.aponteaqui
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

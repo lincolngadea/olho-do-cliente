@@ -1,4 +1,4 @@
-package br.com.olhodocliente
+package br.com.aponteaqui
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

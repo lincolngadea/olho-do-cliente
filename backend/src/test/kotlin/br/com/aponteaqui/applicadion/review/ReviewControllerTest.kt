@@ -1,10 +1,10 @@
-package br.com.olhodocliente.applicadion.review
+package br.com.aponteaqui.applicadion.review
 
-import br.com.olhodocliente.application.review.CreateReviewUseCase
-import br.com.olhodocliente.application.review.ListReviewsUseCase
-import br.com.olhodocliente.domain.review.Platform
-import br.com.olhodocliente.domain.review.Review
-import br.com.olhodocliente.presentation.review.ReviewController
+import br.com.aponteaqui.application.review.CreateReviewUseCase
+import br.com.aponteaqui.application.review.ListReviewsUseCase
+import br.com.aponteaqui.domain.review.Platform
+import br.com.aponteaqui.domain.review.Review
+import br.com.aponteaqui.presentation.review.ReviewController
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired

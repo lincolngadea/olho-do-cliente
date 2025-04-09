@@ -1,9 +1,9 @@
-package br.com.olhodocliente.applicadion.review
+package br.com.aponteaqui.applicadion.review
 
-import br.com.olhodocliente.application.review.CreateReviewUseCase
-import br.com.olhodocliente.domain.review.Platform
-import br.com.olhodocliente.domain.review.Review
-import br.com.olhodocliente.domain.review.ReviewRepository
+import br.com.aponteaqui.application.review.CreateReviewUseCase
+import br.com.aponteaqui.domain.review.Platform
+import br.com.aponteaqui.domain.review.Review
+import br.com.aponteaqui.domain.review.ReviewRepository
 import org.mockito.Mockito
 import org.mockito.kotlin.any
 import java.time.LocalDateTime

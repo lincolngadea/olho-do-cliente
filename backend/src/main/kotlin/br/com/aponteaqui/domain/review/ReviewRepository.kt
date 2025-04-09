@@ -1,4 +1,4 @@
-package br.com.olhodocliente.domain.review
+package br.com.aponteaqui.domain.review
 
 interface ReviewRepository {
     fun findAll(): List<Review>

@@ -1,6 +1,6 @@
-package br.com.olhodocliente.presentation.review.dto
+package br.com.aponteaqui.presentation.review.dto
 
-import br.com.olhodocliente.domain.review.Platform
+import br.com.aponteaqui.domain.review.Platform
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank

@@ -1,7 +1,7 @@
-package br.com.olhodocliente.application.review
+package br.com.aponteaqui.application.review
 
-import br.com.olhodocliente.domain.review.Review
-import br.com.olhodocliente.domain.review.ReviewRepository
+import br.com.aponteaqui.domain.review.Review
+import br.com.aponteaqui.domain.review.ReviewRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.*
