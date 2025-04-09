@@ -2,6 +2,7 @@ package br.com.aponteaqui.presentation.review
 
 import br.com.aponteaqui.application.review.CreateReviewUseCase
 import br.com.aponteaqui.application.review.ListReviewsUseCase
+import br.com.aponteaqui.domain.review.Platform
 import br.com.aponteaqui.domain.review.toResponse
 import br.com.aponteaqui.presentation.review.dto.CreateReviewRequest
 import br.com.aponteaqui.presentation.review.dto.ReviewResponse
@@ -17,8 +18,17 @@ class ReviewController(
     private val createReviewUseCase: CreateReviewUseCase
 ) {
     @GetMapping
-    fun getReviews(): List<ReviewResponse> =
-        listReviewsUseCase.execute().map { it.toResponse() }
+    fun getReviews(
+        @RequestParam(required = false) platform: Platform?
+    ): List<ReviewResponse> {
+        val reviews = if (platform != null){
+            listReviewsUseCase.executeFilteredByPlatform(platform)
+        }else{
+            listReviewsUseCase.execute()
+        }
+        return reviews.map { it.toResponse() }
+    }
+
 
     @PostMapping
     fun createReview(
