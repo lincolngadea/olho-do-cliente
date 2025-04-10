@@ -9,12 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID
 
-
-interface SpringDataReviewJpaRepository: JpaRepository<Review, UUID>{
-    fun findByPlatform(platform: Platform): List<Review>
-    fun findByPlatform(platform: Platform, pageable: Pageable): Page<Review>
-}
-
 @Repository
 class JpaReviewRepository(
     private val jpa: SpringDataReviewJpaRepository
@@ -37,5 +31,9 @@ class JpaReviewRepository(
 
     override fun findByPlatformPaged(platform: Platform, pageable: Pageable): Page<Review> {
         return jpa.findByPlatform(platform, pageable)
+    }
+
+    override fun findById(id: UUID): Review? {
+        return jpa.findById(id).orElse(null)
     }
 }

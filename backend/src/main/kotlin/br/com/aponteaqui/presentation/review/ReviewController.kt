@@ -1,6 +1,7 @@
 package br.com.aponteaqui.presentation.review
 
 import br.com.aponteaqui.application.review.CreateReviewUseCase
+import br.com.aponteaqui.application.review.GetReviewByIdUseCase
 import br.com.aponteaqui.application.review.ListReviewsUseCase
 import br.com.aponteaqui.domain.review.Platform
 import br.com.aponteaqui.domain.review.toResponse
@@ -12,12 +13,14 @@ import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import java.util.UUID
 
 @RestController
 @RequestMapping("/reviews")
 class ReviewController(
     private val listReviewsUseCase: ListReviewsUseCase,
-    private val createReviewUseCase: CreateReviewUseCase
+    private val createReviewUseCase: CreateReviewUseCase,
+    private val getReviewByIdUseCase: GetReviewByIdUseCase
 ) {
     @GetMapping
     fun getReviews(
@@ -42,6 +45,14 @@ class ReviewController(
             listReviewsUseCase.executePage(pageable)
         }
         return reviewsPage.map { it.toResponse() }
+    }
+
+    @GetMapping("/{id}")
+    fun getReviewById(
+        @PathVariable id:UUID
+    ): ResponseEntity<ReviewResponse>{
+        val review = getReviewByIdUseCase.execute(id)
+        return ResponseEntity.ok(review.toResponse())
     }
 
 

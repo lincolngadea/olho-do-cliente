@@ -6,12 +6,13 @@ import java.time.LocalDateTime
 import java.util.*
 
 fun reviewMock(
+    idMock: UUID = UUID.randomUUID(),
     authorNameMock: String = "Rafael",
     ratingMock: Int = 5,
     commentMock: String = "Excelente",
     platformMock: Platform = Platform.GOOGLE
 )= Review(
-    id = UUID.randomUUID(),
+    id = idMock,
     authorName = authorNameMock,
     rating = ratingMock,
     comment = commentMock,

@@ -1,6 +1,8 @@
 package br.com.aponteaqui.presentation.review
 
+import br.com.aponteaqui.application.exceptions.ReviewNotfoundException
 import br.com.aponteaqui.application.review.CreateReviewUseCase
+import br.com.aponteaqui.application.review.GetReviewByIdUseCase
 import br.com.aponteaqui.application.review.ListReviewsUseCase
 import br.com.aponteaqui.domain.review.Platform
 import br.com.aponteaqui.domain.review.Review
@@ -19,6 +21,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import java.util.*
 
 @WebMvcTest(ReviewController::class)
 class ReviewControllerTest {
@@ -30,6 +33,9 @@ class ReviewControllerTest {
     lateinit var listReviewsUseCase: ListReviewsUseCase
 
     @MockitoBean
+    lateinit var getReviewByIdUseCase: GetReviewByIdUseCase
+
+    @MockitoBean
     lateinit var createReviewUseCase: CreateReviewUseCase
 
     @Test
@@ -38,7 +44,7 @@ class ReviewControllerTest {
 
         val mapper = jacksonObjectMapper()
 
-        val json = mapper.writeValueAsString(CreateReviewRequest("Rafael", 5,"Excelente", Platform.GOOGLE))
+        val json = mapper.writeValueAsString(CreateReviewRequest("Rafael", 5, "Excelente", Platform.GOOGLE))
 
         Mockito.`when`(
             createReviewUseCase.execute(
@@ -52,7 +58,7 @@ class ReviewControllerTest {
         mockMvc.post("/reviews") {
             contentType = MediaType.APPLICATION_JSON
             content = json
-        }.andDo{
+        }.andDo {
             println()
         }.andExpect {
             status { isCreated() }
@@ -60,7 +66,8 @@ class ReviewControllerTest {
         }
     }
 
-    fun `deve retornar uma lista de reviews filtrados por platform`(){
+    @Test
+    fun `deve retornar uma lista de reviews filtrados por platform`() {
         val review = reviewMock()
 
         Mockito.`when`(listReviewsUseCase.executeFilteredByPlatform(Platform.GOOGLE))
@@ -70,12 +77,13 @@ class ReviewControllerTest {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                jsonPath("$[0].platform"){value("GOOGLE")}
-                jsonPath("$[0].authorName"){ value("Rafael")}
+                jsonPath("$[0].platform") { value("GOOGLE") }
+                jsonPath("$[0].authorName") { value("Rafael") }
             }
     }
 
-    fun `deve retornar avaliacoes paginadas`(){
+    @Test
+    fun `should return available paginated reviews`() {
         val review = reviewMock(
             authorNameMock = "Carlos",
             ratingMock = 4,
@@ -91,8 +99,58 @@ class ReviewControllerTest {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                jsonPath("$.content.length()"){value(1)}
-                jsonPath("$.content[0].authorName"){value("Carlos")}
+                jsonPath("$.content.length()") { value(1) }
+                jsonPath("$.content[0].authorName") { value("Carlos") }
+            }
+    }
+
+    @Test
+    fun `should return an existent review by id`() {
+        val id = UUID.randomUUID()
+        val review = reviewMock(idMock = id)
+
+        Mockito.`when`(getReviewByIdUseCase.execute(id))
+            .thenReturn(review)
+
+        mockMvc.get("/reviews/$id")
+            .andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$.id") { value(id.toString()) }
+                jsonPath("$.authorName") { value("Rafael") }
+            }
+    }
+
+    @Test
+    fun `should return 404 when the review is not found`() {
+        val id = UUID.randomUUID()
+
+        Mockito.`when`(getReviewByIdUseCase.execute(id))
+            .thenThrow(ReviewNotfoundException(id))
+
+        mockMvc.get("/reviews/{id}", id)
+            .andExpect {
+                status { isNotFound() }
+                jsonPath("$.message") { value("Avaliação do id: $id não encontrada") }
+            }
+    }
+
+    @Test
+    fun `deve retornar lista de avaliacoes em JSON`() {
+        val review = reviewMock(
+            authorNameMock = "João"
+        )
+
+        Mockito.`when`(listReviewsUseCase.execute()).thenReturn(listOf(review))
+
+        mockMvc.get("/reviews")
+            .andExpect {
+                status { isOk() }
+                content { contentType(MediaType.APPLICATION_JSON) }
+                jsonPath("$[0].authorName") { value("João") }
+                jsonPath("$[0].rating") { value(5) }
+                jsonPath("$[0].comment") { value("Excelente") }
+                jsonPath("$[0].platform") { value("GOOGLE") }
             }
     }
 }
