@@ -4,6 +4,7 @@ import br.com.aponteaqui.application.exceptions.ReviewNotfoundException
 import br.com.aponteaqui.application.review.CreateReviewUseCase
 import br.com.aponteaqui.application.review.GetReviewByIdUseCase
 import br.com.aponteaqui.application.review.ListReviewsUseCase
+import br.com.aponteaqui.application.review.UpdateReviewUseCase
 import br.com.aponteaqui.domain.review.Platform
 import br.com.aponteaqui.domain.review.Review
 import br.com.aponteaqui.presentation.review.dto.CreateReviewRequest
@@ -37,6 +38,9 @@ class ReviewControllerTest {
 
     @MockitoBean
     lateinit var createReviewUseCase: CreateReviewUseCase
+
+    @MockitoBean
+    lateinit var updateReviewUseCase: UpdateReviewUseCase
 
     @Test
     fun `deve criar uma nova review e retornar 201 created`() {
