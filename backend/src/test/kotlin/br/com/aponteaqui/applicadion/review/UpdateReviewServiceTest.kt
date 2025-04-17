@@ -1,6 +1,7 @@
 package br.com.aponteaqui.applicadion.review
 
 import br.com.aponteaqui.application.review.UpdateReviewService
+import br.com.aponteaqui.application.review.UpdateReviewUseCase
 import br.com.aponteaqui.domain.review.Platform
 import br.com.aponteaqui.domain.review.Review
 import br.com.aponteaqui.domain.review.ReviewRepository
@@ -14,13 +15,28 @@ import java.time.LocalDateTime
 import java.util.UUID
 import kotlin.test.Test
 import br.com.aponteaqui.utils.any
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.jayway.jsonpath.spi.json.JacksonJsonNodeJsonProvider
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.bean.override.mockito.MockitoBean
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.put
 
+@ActiveProfiles("test")
 class UpdateReviewServiceTest {
+
+    @Autowired
+    lateinit var mockMvc: MockMvc
 
     private lateinit var repository: ReviewRepository
     private lateinit var service: UpdateReviewService
 
     private val existingReviewId = UUID.randomUUID()
+
+    @MockitoBean
+    lateinit var updateReviewUseCase: UpdateReviewUseCase
 
     private val existingReview = reviewMock(
         authorNameMock = "Maria",
@@ -81,7 +97,7 @@ class UpdateReviewServiceTest {
     }
 
     @Test
-    fun `deve lançar excecao quando avalicao não for encontrada`() {
+    fun `should throw an exception when the review is not found `() {
         // Arrange
         val id = UUID.randomUUID()
         val request = UpdateReviewRequest(
@@ -105,5 +121,43 @@ class UpdateReviewServiceTest {
         }
 
         assertEquals("Review not found!", exception.message)
+    }
+
+    fun `should update an existent review and return 200 ok`(){
+        val id = UUID.randomUUID()
+        val request = UpdateReviewRequest(
+            authorName = "João Paulo",
+            rating = 5,
+            comment = "Excelente",
+            platform = "GOOGLE"
+        )
+
+        val reviewUpdate = reviewMock(
+            idMock = id,
+            ratingMock = request.rating,
+            commentMock = request.comment,
+            platformMock = Platform.valueOf(request.platform)
+        )
+
+        Mockito.`when`(
+            updateReviewUseCase.execute(
+                id = id,
+                authorName = request.authorName,
+                rating = request.rating,
+                comment = request.comment,
+                platform = request.platform
+            )
+        ).thenReturn(reviewUpdate)
+
+        val json = jacksonObjectMapper().writeValueAsString(request)
+
+        mockMvc.put("/reviews/$id"){
+            contentType = MediaType.APPLICATION_JSON
+            content = json
+        }.andExpect {
+            status { isOk() }
+            jsonPath("$.id") {value(id.toString())}
+            jsonPath("$.authorname") {value("João Atual")}
+        }
     }
 }

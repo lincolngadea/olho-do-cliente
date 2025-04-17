@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.post
 import java.util.*
 
 @WebMvcTest(ReviewController::class)
+@ActiveProfiles("test")
 class ReviewControllerTest {
 
     @Autowired

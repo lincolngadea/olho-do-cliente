@@ -6,11 +6,13 @@ import br.com.aponteaqui.domain.review.Review
 import br.com.aponteaqui.domain.review.ReviewRepository
 import org.mockito.Mockito
 import org.mockito.kotlin.any
+import org.springframework.test.context.ActiveProfiles
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@ActiveProfiles("test")
 class CreateReviewUseCaseTest {
     private val repository = Mockito.mock(ReviewRepository::class.java)
     private val useCase = CreateReviewUseCase(repository)
